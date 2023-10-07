@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Australian Census Questionnaire</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="script.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <img src="ABS_logo.svg" alt="ABS Logo" class="logo">
+        <h1>Census Household Form</h1>
+    </header>
+
+    <form method="POST" action="https://tau.usq.edu.au/courses/CSC2406/reflect.php" id="censusForm">
+        <!-- Part 0: Address of the dwelling -->
+        <section id="part0">
+            <div style="background-color: #fac08e;">
+                <h2>Part 0: Address of the dwelling</h2>
+                <div class="form-group">
+                <label for="aptNumber">Apartment Number</label>
+                <input type="number" id="aptNumber" name="aptNumber" required>
+                </div>
+                <div class="form-group">
+                <label for="streetNumber">Street Number</label>
+                <input type="number" id="streetNumber" name="streetNumber" required>
+                </div>
+                <div class="form-group">
+                <label for="streetName">Street Name</label>
+                <input type="text" id="streetName" name="streetName" required>
+                </div>
+                <div class="form-group">
+                <label for="suburb">Suburb/city</label>
+                <input type="text" id="suburb" name="suburb" required>
+                </div>
+                <div class="form-group">
+                <label for="suburb">State</label>
+                <select id="state" name="state" required>
+                    <option value="QLD">QLD</option>
+                    <option value="NSW">NSW</option>
+                    <option value="VIC">VIC</option>
+                    <option value="TAS">TAS</option>
+                    <option value="SA">SA</option>
+                    <option value="WA">WA</option>
+                    <option value="NT">NT</option>
+                    <option value="ACT">ACT</option>
+                </select>
+                </div>
+                <div class="form-group">
+                <label for="postcode">Postcode</label>
+                <input type="number" id="postcode" name="postcode" required>
+                </div>
+            </div>
+            <button type="button" onclick="validatePart0()">Next</button>
+        </section>
+        <!-- Part I: People in the Dwelling -->
+        <section id="part1">
+            <div style="background-color: #fac08e;">
+                <h2>Part I: People in the Dwelling</h2>
+                <div class="form-group">
+                    <label for="peopleCount">How many people spent the census night at the dwelling?</label>
+                    <input type="number" id="peopleCount" name="peopleCount">
+                    <button type="button" onclick="addPeople()">Confirm</button>
+                </div>
+
+                <!-- Individual details will be dynamically added based on the number provided -->
+                <div id="peopleDetails">
+                    <!-- Individual details will be dynamically added here -->
+                </div>
+            </div>
+            <button type="button" onclick="validatePart1()">Next</button>
+        </section>
+
+        <!-- Part II: The Dwelling -->
+        <section id="part2">
+            <div style="background-color: #fac08e;">
+                <h2>Part II: The Dwelling</h2>
+                <!-- Questions for Part II -->
+                <!-- Type of Dwelling: Detached House, Semi-detached House, Apartment, Retirement village, Caravan, Houseboat, Boat, Tent, Other -->
+                <div class="form-group" id="q2-dwellingType">
+                    <label for="dwellingType">Type of Dwelling</label>
+                    <select id="dwellingType" name="dwellingType">
+                        <option value="Detached House">Detached House</option>
+                        <option value="Semi-detached House">Semi-detached House</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Retirement village">Retirement village</option>
+                        <option value="Caravan">Caravan</option>
+                        <option value="Houseboat">Houseboat</option>
+                        <option value="Boat">Boat</option>
+                        <option value="Tent">Tent</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <!-- Is this dwelling: Owned outright, Owned with Mortgage, Rented, Rent-free, Life Tenure Scheme, Other -->
+                <div class="form-group" id="q2-dwellingOwnership">
+                    <label for="dwellingOwnership">Is this dwelling</label>
+                    <select id="dwellingOwnership" name="dwellingOwnership">
+                        <option value="Owned outright">Owned outright</option>
+                        <option value="Owned with Mortgage">Owned with Mortgage</option>
+                        <option value="Rented">Rented</option>
+                        <option value="Rent-free">Rent-free</option>
+                        <option value="Life Tenure Scheme">Life Tenure Scheme</option>
+                        <option value="Other">Other</option>
+                    </select> 
+                </div>
+                <!-- Sources of energy for the dwelling: Mains electricity, Photovoltaic Panels, Battery, Gas, No power source -->
+                <div class="form-group" id="q2-energySource">
+                    <label for="energySource">Sources of energy for the dwelling</label>
+                    <select id="energySource" name="energySource">
+                        <option value="Mains electricity">Mains electricity</option>
+                        <option value="Photovoltaic Panels">Photovoltaic Panels</option>
+                        <option value="Battery">Battery</option>
+                        <option value="Gas">Gas</option>
+                        <option value="No power source">No power source</option>
+                    </select>  
+                </div>
+                <!-- Internet Access for the dwelling: fibre to the house, fibre to the curb, fibre to the node, fixed wireless, ADSL, Mobile Broadband, No Internet -->
+                <div class="form-group" id="q2-internetAccess">
+                    <label for="internetAccess">Internet Access for the dwelling</label>
+                    <select id="internetAccess" name="internetAccess">
+                        <option value="fibre to the house">fibre to the house</option>
+                        <option value="fibre to the curb">fibre to the curb</option>
+                        <option value="fibre to the node">fibre to the node</option>
+                        <option value="fixed wireless">fixed wireless</option>
+                        <option value="ADSL">ADSL</option>
+                        <option value="Mobile Broadband">Mobile Broadband</option>
+                        <option value="No Internet">No Internet</option>
+                    </select>
+                </div>
+                <!-- Average monthly internet download (in GB)? -->
+                <div class="form-group" id="q2-internetDownload">
+                    <label for="internetDownload">Average monthly internet download (in GB)?</label>
+                    <input type="number" id="internetDownload" name="internetDownload" value="0">
+                </div>  
+                <!-- How Many Bedrooms in the dwelling? -->
+                <div class="form-group" id="q2-bedroomCount">
+                    <label for="bedroomCount">How Many Bedrooms in the dwelling?</label>
+                    <input type="number" id="bedroomCount" name="bedroomCount" value="1">
+                </div>
+                <!-- Are there any electric vehicles garaged at the dwelling? -->
+                <div class="form-group" id="q2-electricVehicle">
+                    <label for="electricVehicle">Are there any electric vehicles garaged at the dwelling?</label>
+                    <input type="radio" id="electricVehicleYes" name="electricVehicle" value="yes">
+                    <label for="electricVehicleYes">Yes</label>
+                    <input type="radio" id="electricVehicleNo" name="electricVehicle" value="no">
+                    <label for="electricVehicleNo">No</label>
+                </div>
+                <!-- If yes: What type: car, hybrid-car, SUV, hybrid-SUV, truck, hybrid-truck, scooter, motorcycle -->
+                <div class="form-group" id="q2-electricVehicleType">
+                    <label for="electricVehicleType">If yes: What type</label>
+                    <select id="electricVehicleType" name="electricVehicleType">
+                        <option value="car">car</option>
+                        <option value="hybrid-car">hybrid-car</option>
+                        <option value="SUV">SUV</option>
+                        <option value="hybrid-SUV">hybrid-SUV</option>
+                        <option value="truck">truck</option>
+                        <option value="hybrid-truck">hybrid-truck</option>
+                        <option value="scooter">scooter</option>
+                        <option value="motorcycle">motorcycle</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" onclick="validatePart2()">Next</button>
+        </section>
+
+        <!-- Part III: Animals -->
+        <section id="part3">
+            <div style="background-color: #fac08e;">
+                <h2>Part III: Animals</h2>
+                <!-- Questions for Part III -->
+                <!-- How many types of animal on the census night were housed at or in association with the dwelling? -->
+                <div class="form-group" id="q3-animalCount">
+                    <label for="animalCount">How many types of animal on the census night were housed at or in association with the dwelling?</label>
+                    <input type="number" id="animalCount" name="animalCount" value="0">
+                    <button type="button" onclick="addAnimals()">Confirm</button>
+                </div>
+                <!-- Will be dynamically added for each type of animal -->
+                <div id="animalDetails">
+                    <!-- Will be dynamically added for each type of animal -->
+                </div>
+            </div>
+            <button type="button" onclick="validatePart3()">Next</button>
+        </section>
+
+        <!-- Part IV: Feedback -->
+        <section id="part4">
+            <div style="background-color: #fac08e;">
+                <h2>Part IV: Feedback</h2>
+                <!-- Questions for Part IV -->
+                <!-- For possible follow-up questions please supply a contact — phone-number or email address -->
+                <div class="form-group" id="q4-contact">
+                    <label for="contact">For possible follow-up questions please supply a contact — phone-number or email address</label>
+                    <select id="contactType" name="contactType">
+                        <option value="phone">Phone</option>
+                        <option value="email">Email</option>
+                    </select>
+                    <input type="text" id="contact" name="contact">
+                </div>
+                <!-- How difficult was this questionnaire to navigate? Very Hard, Hard, OK, Easy, Very Easy -->
+                <div class="form-group" id="q4-difficulty">
+                    <label for="difficulty">How difficult was this questionnaire to navigate?</label>
+                    <div class="radioGroup">
+                        <input type="radio" id="difficultyVeryHard" name="difficulty" value="Very Hard">
+                        <label for="difficultyVeryHard">Very Hard</label>
+                        <input type="radio" id="difficultyHard" name="difficulty" value="Hard">
+                        <label for="difficultyHard">Hard</label>
+                        <input type="radio" id="difficultyOK" name="difficulty" value="OK">
+                        <label for="difficultyOK">OK</label>
+                        <input type="radio" id="difficultyEasy" name="difficulty" value="Easy">
+                        <label for="difficultyEasy">Easy</label>
+                        <input type="radio" id="difficultyVeryEasy" name="difficulty" value="Very Easy">
+                        <label for="difficultyVeryEasy">Very Easy</label>
+                    </div>
+                </div>
+                <!-- Where the input requirements of each question easy to follow? Very confusing, Confusing, OK, Clear, Very Clear -->
+                <div class="form-group" id="q4-inputRequirements">
+                    <label for="inputRequirements">Where the input requirements of each question easy to follow?</label>
+                    <div class="radioGroup">
+                        <input type="radio" id="inputRequirementsVeryConfusing" name="inputRequirements" value="Very Confusing">
+                        <label for="inputRequirementsVeryConfusing">Very Confusing</label>
+                        <input type="radio" id="inputRequirementsConfusing" name="inputRequirements" value="Confusing">
+                        <label for="inputRequirementsConfusing">Confusing</label>
+                        <input type="radio" id="inputRequirementsOK" name="inputRequirements" value="OK">
+                        <label for="inputRequirementsOK">OK</label>
+                        <input type="radio" id="inputRequirementsClear" name="inputRequirements" value="Clear">
+                        <label for="inputRequirementsClear">Clear</label>
+                        <input type="radio" id="inputRequirementsVeryClear" name="inputRequirements" value="Very Clear">
+                        <label for="inputRequirementsVeryClear">Very Clear</label>
+                    </div>
+                </div>
+                <!-- Did you need to use the Help? Very Often, Often, Occasionally, Never -->
+                <div class="form-group" id="q4-help">
+                    <label for="help">Did you need to use the Help?</label>
+                    <div class="radioGroup">
+                        <input type="radio" id="helpVeryOften" name="help" value="Very Often">
+                        <label for="helpVeryOften">Very Often</label>
+                        <input type="radio" id="helpOften" name="help" value="Often">
+                        <label for="helpOften">Often</label>
+                        <input type="radio" id="helpOccasionally" name="help" value="Occasionally">
+                        <label for="helpOccasionally">Occasionally</label>
+                        <input type="radio" id="helpNever" name="help" value="Never">
+                        <label for="helpNever">Never</label>
+                    </div>
+                </div>
+                <!-- Did you find the help useful? Yes, No, Did not use it -->
+                <div class="form-group" id="q4-helpUseful">
+                    <label for="helpUseful">Did you find the help useful?</label>
+                    <div class="radioGroup">
+                        <input type="radio" id="helpUsefulYes" name="helpUseful" value="Yes">
+                        <label for="helpUsefulYes">Yes</label>
+                        <input type="radio" id="helpUsefulNo" name="helpUseful" value="No">
+                        <label for="helpUsefulNo">No</label>
+                        <input type="radio" id="helpUsefulDidNotUse" name="helpUseful" value="Did not use it">
+                        <label for="helpUsefulDidNotUse">Did not use it</label>
+                    </div>
+                </div>                
+                <!-- Any other comments you would like to make? -->
+                <div class="form-group" id="q4-comments">
+                    <label for="comments">Any other comments you would like to make?</label>
+                    <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+                </div>
+            </div>
+            <input type="submit" value="Submit" onsubmit="validatePart4()">
+        </section>
+    </form>
+
+    <!-- Help Popup -->
+    <div id="helpPopup" style="display: none;">
+        <!-- Help content will be dynamically added here based on the section -->
+    </div>
+</body>
+
+</html>
